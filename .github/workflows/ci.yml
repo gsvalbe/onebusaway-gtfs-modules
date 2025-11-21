@@ -87,7 +87,7 @@ jobs:
           mvn $MAVEN_ARGS $MAVEN_SKIP_ARGS package jib:build
 
   container-image-gsvalbe:
-    if: github.repository_owner == 'gsvalbe' && github.event_name == 'push' && github.ref == 'refs/heads/master'
+    if: github.repository_owner == 'gsvalbe' && github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
       contents: read
