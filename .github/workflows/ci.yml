@@ -85,3 +85,23 @@ jobs:
         run: |
           MAVEN_SKIP_ARGS="-Dmaven.test.skip=true -Dmaven.source.skip=true"
           mvn $MAVEN_ARGS $MAVEN_SKIP_ARGS package jib:build
+
+  container-image-gsvalbe:
+    if: github.repository_owner == 'gsvalbe' && github.event_name == 'push' && github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'maven'
+
+      - name: Publish package
+        run: mvn --batch-mode deploy
+        working-directory: onebusaway-gtfs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

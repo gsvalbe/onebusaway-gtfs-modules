@@ -5,6 +5,7 @@
 
   <name>onebusaway-gtfs</name>
   <description>A Java library for reading and writing General Transit Feed Spec feeds</description>
+  <version>GSVALBE-1.0.0</version>
 
   <parent>
     <groupId>org.onebusaway</groupId>
@@ -13,11 +14,19 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
+  <distributionManagement>
+    <repository>
+      <id>github</id>
+      <name>GitHub Packages</name>
+      <url>https://maven.pkg.github.com/gsvalbe/onebusaway-gtfs-modules</url>
+    </repository>
+  </distributionManagement>
+
   <dependencies>
     <dependency>
       <groupId>org.onebusaway</groupId>
       <artifactId>onebusaway-csv-entities</artifactId>
-      <version>${project.version}</version>
+      <version>${project.parent.version}</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
