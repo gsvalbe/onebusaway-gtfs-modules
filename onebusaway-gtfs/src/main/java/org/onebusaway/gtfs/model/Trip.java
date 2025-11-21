@@ -76,6 +76,15 @@ public final class Trip extends IdentityBean<AgencyAndId> {
   @CsvField(optional = true, defaultValue = "0")
   private int carsAllowed = 0;
 
+  /** Pieturas extension. Trip stopping pattern name. */
+  @CsvField(optional = true)
+  private String tripPatternName;
+
+  /** Pieturas extension. Trip stopping pattern type.
+   * 0 = primary, 1 = secondary, 2 = technical (with passengers), 3 = technical (without passengers) */
+  @CsvField(optional = true, defaultValue = "0")
+  private int tripPatternType = 0;
+
   public Trip() {}
 
   public Trip(Trip obj) {
@@ -94,6 +103,8 @@ public final class Trip extends IdentityBean<AgencyAndId> {
     this.safeDurationOffset = obj.safeDurationOffset;
     this.bikesAllowed = obj.bikesAllowed;
     this.carsAllowed = obj.carsAllowed;
+    this.tripPatternName = obj.tripPatternName;
+    this.tripPatternType = obj.tripPatternType;
   }
 
   public AgencyAndId getId() {
@@ -226,6 +237,36 @@ public final class Trip extends IdentityBean<AgencyAndId> {
    */
   public void setCarsAllowed(int carsAllowed) {
     this.carsAllowed = carsAllowed;
+  }
+
+  /**
+   * Pieturas extension.
+   */
+  public String getTripPatternName() {
+    return tripPatternName;
+  }
+
+  /**
+   * Pieturas extension.
+   */
+  public void setTripPatternName(String tripPatternName) {
+    this.tripPatternName = tripPatternName;
+  }
+
+  /**
+   * Pieturas extension. Trip stopping pattern type.
+   * @return 0 = primary, 1 = secondary, 2 = technical (with passengers), 3 = technical (without passengers)
+   */
+  public int getTripPatternType() {
+    return tripPatternType;
+  }
+
+  /**
+   * Pieturas extension. Trip stopping pattern type.
+   * @param tripPatternType 0 = primary, 1 = secondary, 2 = technical (with passengers), 3 = technical (without passengers)
+   */
+  public void setTripPatternType(int tripPatternType) {
+    this.tripPatternType = tripPatternType;
   }
 
   public String toString() {
