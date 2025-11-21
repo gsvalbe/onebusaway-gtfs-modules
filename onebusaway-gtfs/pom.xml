@@ -5,7 +5,7 @@
 
   <name>onebusaway-gtfs</name>
   <description>A Java library for reading and writing General Transit Feed Spec feeds</description>
-  <version>GSVALBE-1.0.0</version>
+  <version>GSVALBE-1.1.0</version>
 
   <parent>
     <groupId>org.onebusaway</groupId>
