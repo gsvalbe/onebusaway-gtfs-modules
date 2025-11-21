@@ -167,7 +167,7 @@ public abstract class AbstractCollectionEntityMergeStrategy<KEY extends Serializ
      * There needs to be a reasonable number of overlapping identifiers in the first place for us to
      * consider using identifier-based duplicate detection.
      */
-    Set<KEY> commonKeys = new HashSet<KEY>();
+    Set<KEY> commonKeys = new HashSet<>();
     double elementOvelapScore =
         DuplicateScoringSupport.scoreElementOverlap(sourceKeys, targetKeys, commonKeys);
     if (commonKeys.isEmpty() || elementOvelapScore < _minElementsInCommonScoreForAutoDetect) {
@@ -243,8 +243,8 @@ public abstract class AbstractCollectionEntityMergeStrategy<KEY extends Serializ
    * @return
    */
   protected String getRawKey(KEY key) {
-    if (key instanceof AgencyAndId) {
-      return ((AgencyAndId) key).getId();
+    if (key instanceof AgencyAndId id) {
+      return id.getId();
     }
     throw new UnsupportedOperationException("cannot generate raw key for type: " + key.getClass());
   }
@@ -298,13 +298,11 @@ public abstract class AbstractCollectionEntityMergeStrategy<KEY extends Serializ
         _log.warn("rename with type String not supported for key=" + key);
       }
       return (KEY) (context.getPrefix() + key);
-    } else if (key instanceof AgencyAndId) {
+    } else if (key instanceof AgencyAndId id) {
       if (this.getDuplicateRenamingStrategy() == EDuplicateRenamingStrategy.AGENCY) {
-        return (KEY)
-            MergeSupport.renameAgencyAndId(
-                ((AgencyAndId) key).getAgencyId() + "-", (AgencyAndId) key);
+        return (KEY) MergeSupport.renameAgencyAndId(id.getAgencyId() + "-", id);
       }
-      return (KEY) MergeSupport.renameAgencyAndId(context, (AgencyAndId) key);
+      return (KEY) MergeSupport.renameAgencyAndId(context, id);
     }
     throw new UnsupportedOperationException("uknown key type: " + key.getClass());
   }

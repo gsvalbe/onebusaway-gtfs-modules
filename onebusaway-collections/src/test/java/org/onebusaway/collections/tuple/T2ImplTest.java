@@ -13,42 +13,42 @@
  */
 package org.onebusaway.collections.tuple;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class T2ImplTest {
 
   @Test
   public void testFirstAndSecond() {
 
-    T2Impl<String, String> p1 = new T2Impl<String, String>("a", "b");
+    T2Impl<String, String> p1 = new T2Impl<>("a", "b");
     assertEquals("a", p1.getFirst());
     assertEquals("b", p1.getSecond());
 
-    T2Impl<String, String> p2 = new T2Impl<String, String>(null, "b");
+    T2Impl<String, String> p2 = new T2Impl<>(null, "b");
     assertEquals(null, p2.getFirst());
     assertEquals("b", p2.getSecond());
 
-    T2Impl<String, String> p3 = new T2Impl<String, String>("a", null);
+    T2Impl<String, String> p3 = new T2Impl<>("a", null);
     assertEquals("a", p3.getFirst());
     assertEquals(null, p3.getSecond());
 
-    T2Impl<String, String> p4 = new T2Impl<String, String>(null, null);
+    T2Impl<String, String> p4 = new T2Impl<>(null, null);
     assertEquals(null, p4.getFirst());
     assertEquals(null, p4.getSecond());
   }
 
   @Test
   public void testEquality() {
-    T2Impl<String, String> p1 = new T2Impl<String, String>("a", "b");
-    T2Impl<String, String> p2 = new T2Impl<String, String>("a", "b");
-    T2Impl<String, String> p3 = new T2Impl<String, String>(null, "b");
-    T2Impl<String, String> p4 = new T2Impl<String, String>(null, "b");
-    T2Impl<String, String> p5 = new T2Impl<String, String>(null, null);
-    T2Impl<String, String> p6 = new T2Impl<String, String>(null, null);
-    T2Impl<String, String> p7 = new T2Impl<String, String>("c", "b");
+    T2Impl<String, String> p1 = new T2Impl<>("a", "b");
+    T2Impl<String, String> p2 = new T2Impl<>("a", "b");
+    T2Impl<String, String> p3 = new T2Impl<>(null, "b");
+    T2Impl<String, String> p4 = new T2Impl<>(null, "b");
+    T2Impl<String, String> p5 = new T2Impl<>(null, null);
+    T2Impl<String, String> p6 = new T2Impl<>(null, null);
+    T2Impl<String, String> p7 = new T2Impl<>("c", "b");
 
     assertEquals(p1, p1);
     assertEquals(p1, p2);

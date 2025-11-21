@@ -20,12 +20,8 @@ import org.onebusaway.gtfs.model.Trip;
 import org.onebusaway.gtfs.services.GtfsMutableRelationalDao;
 import org.onebusaway.gtfs_transformer.services.GtfsTransformStrategy;
 import org.onebusaway.gtfs_transformer.services.TransformContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class LastStopToHeadsignStrategy implements GtfsTransformStrategy {
-  // replace trip_headsign with the last stop on that trip
-  private static Logger _log = LoggerFactory.getLogger(LastStopToHeadsignStrategy.class);
 
   @Override
   public String getName() {
@@ -36,7 +32,7 @@ public class LastStopToHeadsignStrategy implements GtfsTransformStrategy {
   public void run(TransformContext context, GtfsMutableRelationalDao dao) {
     for (Trip trip : dao.getAllTrips()) {
       List<StopTime> stopTimes = dao.getStopTimesForTrip(trip);
-      StopLocation lastStop = stopTimes.get(stopTimes.size() - 1).getStop();
+      StopLocation lastStop = stopTimes.getLast().getStop();
 
       trip.setTripHeadsign(lastStop.getName());
     }

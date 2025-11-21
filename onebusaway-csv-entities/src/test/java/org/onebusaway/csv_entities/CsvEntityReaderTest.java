@@ -13,14 +13,12 @@
  */
 package org.onebusaway.csv_entities;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.List;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.onebusaway.csv_entities.exceptions.CsvEntityIOException;
 import org.onebusaway.csv_entities.schema.AnnotationDrivenEntitySchemaFactory;
 
@@ -54,7 +52,7 @@ public class CsvEntityReaderTest {
   @Test
   public void testInternString() throws CsvEntityIOException, IOException {
 
-    ListEntityHandler<AnnotatedTestBean> handler = new ListEntityHandler<AnnotatedTestBean>();
+    ListEntityHandler<AnnotatedTestBean> handler = new ListEntityHandler<>();
 
     CsvEntityReader reader = new CsvEntityReader();
     reader.setInternStrings(true);
@@ -65,7 +63,7 @@ public class CsvEntityReaderTest {
     reader.readEntities(AnnotatedTestBean.class, source);
 
     List<AnnotatedTestBean> values = handler.getValues();
-    AnnotatedTestBean a = values.get(0);
+    AnnotatedTestBean a = values.getFirst();
     AnnotatedTestBean b = values.get(1);
     assertSame(a.getValue(), b.getValue());
   }

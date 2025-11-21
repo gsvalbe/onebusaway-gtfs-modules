@@ -13,11 +13,11 @@
  */
 package org.onebusaway.collections;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Arrays;
 import java.util.List;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class FunctionalLibraryTest {
 
@@ -34,11 +34,11 @@ public class FunctionalLibraryTest {
 
     List<Dummy> result = FunctionalLibrary.filter(all, "name", "a");
     assertEquals(1, result.size());
-    assertSame(a, result.get(0));
+    assertSame(a, result.getFirst());
 
     result = FunctionalLibrary.filter(all, "name", "b");
     assertEquals(2, result.size());
-    assertSame(b, result.get(0));
+    assertSame(b, result.getFirst());
     assertSame(b2, result.get(1));
 
     result = FunctionalLibrary.filter(all, "name", "f");

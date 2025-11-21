@@ -14,7 +14,6 @@
 package org.onebusaway.gtfs.services;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.stream.Stream;
 import org.onebusaway.gtfs.model.*;
 
@@ -128,9 +127,7 @@ public interface GtfsDao extends GenericDao {
 
   Collection<Route> getAllRoutes();
 
-  Collection<RouteStop> getAllRouteStops();
-
-  Collection<RouteShape> getAllRouteShapes();
+  Collection<RouteNetworkAssignment> getAllRouteNetworkAssignments();
 
   Route getRouteForId(AgencyAndId id);
 
@@ -196,7 +193,6 @@ public interface GtfsDao extends GenericDao {
 
   Collection<Area> getAllAreas();
 
-  @Deprecated
   Collection<LocationGroupElement> getAllLocationGroupElements();
 
   Collection<LocationGroup> getAllLocationGroups();
@@ -206,6 +202,8 @@ public interface GtfsDao extends GenericDao {
   Collection<Location> getAllLocations();
 
   Collection<BookingRule> getAllBookingRules();
+
+  Collection<Timeframe> getAllTimeframes();
 
   /****
    * {@link Translation} Methods
@@ -234,12 +232,4 @@ public interface GtfsDao extends GenericDao {
         .findAny()
         .isPresent();
   }
-
-  List<String> getOptionalMetadataFilenames();
-
-  boolean hasMetadata(String filename);
-
-  String getMetadata(String filename);
-
-  void addMetadata(String filename, String content);
 }

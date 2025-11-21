@@ -13,6 +13,7 @@
  */
 package org.onebusaway.gtfs.model;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +22,7 @@ import org.onebusaway.csv_entities.schema.annotations.CsvField;
 
 public abstract class IdentityBean<T extends Serializable> implements Serializable, HasExtensions {
 
-  private static final long serialVersionUID = 1L;
+  @Serial private static final long serialVersionUID = 1L;
 
   @CsvField(ignore = true)
   private Map<Class<?>, Object> _extensionsByType = null;
@@ -33,7 +34,7 @@ public abstract class IdentityBean<T extends Serializable> implements Serializab
   @Override
   public void putExtension(Class<?> type, Object extension) {
     if (_extensionsByType == null) {
-      _extensionsByType = new HashMap<Class<?>, Object>();
+      _extensionsByType = new HashMap<>();
     }
     _extensionsByType.put(type, extension);
   }

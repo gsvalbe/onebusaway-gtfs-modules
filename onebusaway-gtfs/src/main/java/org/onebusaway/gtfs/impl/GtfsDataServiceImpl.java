@@ -223,13 +223,8 @@ public class GtfsDataServiceImpl implements GtfsDataService {
   }
 
   @Override
-  public Collection<RouteStop> getAllRouteStops() {
-    return _dao.getAllRouteStops();
-  }
-
-  @Override
-  public Collection<RouteShape> getAllRouteShapes() {
-    return _dao.getAllRouteShapes();
+  public Collection<RouteNetworkAssignment> getAllRouteNetworkAssignments() {
+    return _dao.getAllRouteNetworkAssignments();
   }
 
   @Override
@@ -393,6 +388,11 @@ public class GtfsDataServiceImpl implements GtfsDataService {
   }
 
   @Override
+  public Collection<Timeframe> getAllTimeframes() {
+    return _dao.getAllTimeframes();
+  }
+
+  @Override
   public Collection<Translation> getAllTranslations() {
     return _dao.getAllTranslations();
   }
@@ -400,26 +400,6 @@ public class GtfsDataServiceImpl implements GtfsDataService {
   @Override
   public Collection<Network> getAllNetworks() {
     return _dao.getAllNetworks();
-  }
-
-  @Override
-  public List<String> getOptionalMetadataFilenames() {
-    return _dao.getOptionalMetadataFilenames();
-  }
-
-  @Override
-  public boolean hasMetadata(String filename) {
-    return _dao.hasMetadata(filename);
-  }
-
-  @Override
-  public String getMetadata(String filename) {
-    return _dao.getMetadata(filename);
-  }
-
-  @Override
-  public void addMetadata(String filename, String content) {
-    _dao.addMetadata(filename, content);
   }
 
   @Override

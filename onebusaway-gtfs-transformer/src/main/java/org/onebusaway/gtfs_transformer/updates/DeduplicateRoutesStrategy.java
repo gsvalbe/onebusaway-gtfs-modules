@@ -23,14 +23,8 @@ import org.onebusaway.gtfs.model.Trip;
 import org.onebusaway.gtfs.services.GtfsMutableRelationalDao;
 import org.onebusaway.gtfs_transformer.services.GtfsTransformStrategy;
 import org.onebusaway.gtfs_transformer.services.TransformContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class DeduplicateRoutesStrategy implements GtfsTransformStrategy {
-
-  private static Logger _log =
-      LoggerFactory.getLogger(
-          org.onebusaway.gtfs_transformer.updates.DeduplicateServiceIdsStrategy.class);
 
   @Override
   public String getName() {
@@ -40,8 +34,7 @@ public class DeduplicateRoutesStrategy implements GtfsTransformStrategy {
   @Override
   public void run(TransformContext context, GtfsMutableRelationalDao dao) {
 
-    Map<AgencyAndId, List<Route>> routesById =
-        new FactoryMap<AgencyAndId, List<Route>>(new ArrayList<Route>());
+    Map<AgencyAndId, List<Route>> routesById = new FactoryMap<>(new ArrayList<Route>());
 
     for (Route route : dao.getAllRoutes()) {
 
@@ -64,7 +57,7 @@ public class DeduplicateRoutesStrategy implements GtfsTransformStrategy {
       if (routes.size() == 1) continue;
 
       // Remove the route with the old id
-      Route route = routes.get(0);
+      Route route = routes.getFirst();
       dao.removeEntity(route);
 
       // Add the route with the new id

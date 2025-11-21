@@ -115,26 +115,25 @@ public class GtfsTransformerMain {
     } catch (MissingOptionException | MissingArgumentException ex) {
       System.err.println("Missing argument: " + ex.getMessage());
       printHelp();
-      System.exit(-2);
+      System.exit(2);
     } catch (UnrecognizedOptionException ex) {
       System.err.println("Unknown argument: " + ex.getMessage());
       printHelp();
-      System.exit(-2);
+      System.exit(2);
     } catch (AlreadySelectedException ex) {
       System.err.println("Argument already selected: " + ex.getMessage());
       printHelp();
-      System.exit(-2);
+      System.exit(2);
     } catch (ParseException ex) {
       System.err.println(ex.getMessage());
       printHelp();
-      System.exit(-2);
+      System.exit(2);
     } catch (TransformSpecificationException ex) {
       System.err.println("error with transform line: " + ex.getLine());
       System.err.println(ex.getMessage());
-      System.exit(-1);
-    } catch (Exception ex) {
-      ex.printStackTrace();
-      System.exit(-1);
+      System.exit(1);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
     }
   }
 
@@ -194,7 +193,7 @@ public class GtfsTransformerMain {
     GtfsTransformer transformer = new GtfsTransformer();
     transformer.setGtfsInputDirectories(inputPaths);
 
-    var outputPath = new File(args.get(args.size() - 1));
+    var outputPath = new File(args.getLast());
     transformer.setOutputDirectory(outputPath);
     LOG.info("output path: {}", outputPath);
 
@@ -266,7 +265,7 @@ public class GtfsTransformerMain {
   private Option[] getOptionsInCommandLineOrder(CommandLine cli, String[] originalArgs) {
 
     Option[] options = cli.getOptions();
-    List<Ordered<Option>> orderedOptions = new ArrayList<Ordered<Option>>();
+    List<Ordered<Option>> orderedOptions = new ArrayList<>();
 
     for (Option option : options) {
 

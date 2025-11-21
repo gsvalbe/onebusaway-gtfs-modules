@@ -13,18 +13,18 @@
  */
 package org.onebusaway.collections;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.HashSet;
 import java.util.Set;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class CollectionsLibraryTest {
 
   @Test
   public void testSet() {
 
-    Set<String> expected = new HashSet<String>();
+    Set<String> expected = new HashSet<>();
     expected.add("a");
     expected.add("b");
     expected.add("c");

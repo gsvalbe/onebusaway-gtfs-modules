@@ -16,7 +16,7 @@ package org.onebusaway.gtfs_transformer.impl;
 import java.io.*;
 import java.net.URL;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import org.onebusaway.csv_entities.CSVLibrary;
@@ -81,7 +81,7 @@ public class AnomalyCheckFutureTripCounts implements GtfsTransformStrategy {
     holidaysListener = (SetListener) readCsvFrom(holidaysListener, holidaysUrl, holidaysFile);
     holidays = holidaysListener.returnContents();
 
-    Map<String, Double> dayAvgTripsMap = new HashMap<String, Double>();
+    Map<String, Double> dayAvgTripsMap = new HashMap<>();
     MapListener mapListener = new MapListener();
     mapListener = (MapListener) readCsvFrom(mapListener, dayAvgTripMapUrl, dayAvgTripMapFile);
     dayAvgTripsMap = mapListener.returnContents();
@@ -104,7 +104,7 @@ public class AnomalyCheckFutureTripCounts implements GtfsTransformStrategy {
     Map<Date, Integer> dateTripMap = getDateTripMap(dao);
 
     int dayCounter = 0;
-    Map<String, ArrayList<Double>> dayAvgTripsMapUpdate = new HashMap<String, ArrayList<Double>>();
+    Map<String, ArrayList<Double>> dayAvgTripsMapUpdate = new HashMap<>();
 
     for (String day : days) {
       dayAvgTripsMapUpdate.put(day, new ArrayList<Double>());
@@ -165,15 +165,15 @@ public class AnomalyCheckFutureTripCounts implements GtfsTransformStrategy {
 
     _log.info(out);
     try {
-      Files.deleteIfExists(Paths.get(dayAvgTripMapFile));
-      Files.write(Paths.get(dayAvgTripMapFile), out.getBytes());
+      Files.deleteIfExists(Path.of(dayAvgTripMapFile));
+      Files.write(Path.of(dayAvgTripMapFile), out.getBytes());
     } catch (IOException io) {
       _log.error(io.getMessage());
     }
   }
 
   private Map<Date, Integer> getDateTripMap(GtfsMutableRelationalDao dao) {
-    Map<Date, Integer> dateTripMap = new HashMap<Date, Integer>();
+    Map<Date, Integer> dateTripMap = new HashMap<>();
     for (Trip trip : dao.getAllTrips()) {
       _log.debug(trip.toString());
       // check for service
@@ -288,7 +288,7 @@ public class AnomalyCheckFutureTripCounts implements GtfsTransformStrategy {
 
     @Override
     public void handleLine(List<String> list) throws Exception {
-      inputSet.add(dateFormatter.parse(list.get(0)));
+      inputSet.add(dateFormatter.parse(list.getFirst()));
     }
 
     Collection<Date> returnContents() {
@@ -301,7 +301,7 @@ public class AnomalyCheckFutureTripCounts implements GtfsTransformStrategy {
 
     @Override
     public void handleLine(List<String> list) {
-      inputMap.put(list.get(0), Double.parseDouble(list.get(1)));
+      inputMap.put(list.getFirst(), Double.parseDouble(list.get(1)));
     }
 
     Map<String, Double> returnContents() {

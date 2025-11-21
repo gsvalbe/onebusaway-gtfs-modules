@@ -13,8 +13,8 @@
  */
 package org.onebusaway.collections;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,16 +23,16 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ConcurrentCollectionsLibraryTest {
 
   @Test
   public void testAddToMapValueList() throws InterruptedException {
 
-    ConcurrentMap<String, List<String>> m = new ConcurrentHashMap<String, List<String>>();
+    ConcurrentMap<String, List<String>> m = new ConcurrentHashMap<>();
 
-    List<AddOp> ops = new ArrayList<AddOp>();
+    List<AddOp> ops = new ArrayList<>();
     ops.add(new AddOp(m, "a", "1"));
     ops.add(new AddOp(m, "b", "1"));
     ops.add(new AddOp(m, "a", "2"));

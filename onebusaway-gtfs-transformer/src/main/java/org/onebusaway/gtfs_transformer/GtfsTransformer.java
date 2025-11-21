@@ -54,10 +54,9 @@ public class GtfsTransformer {
 
   private File _outputDirectory;
 
-  private List<GtfsTransformStrategy> _transformStrategies = new ArrayList<GtfsTransformStrategy>();
+  private List<GtfsTransformStrategy> _transformStrategies = new ArrayList<>();
 
-  private List<GtfsEntityTransformStrategy> _entityTransformStrategies =
-      new ArrayList<GtfsEntityTransformStrategy>();
+  private List<GtfsEntityTransformStrategy> _entityTransformStrategies = new ArrayList<>();
 
   private TransformContext _context = new TransformContext();
 
@@ -115,7 +114,7 @@ public class GtfsTransformer {
 
   public GtfsTransformStrategy getLastTransform() {
     if (_transformStrategies.isEmpty()) return null;
-    return _transformStrategies.get(_transformStrategies.size() - 1);
+    return _transformStrategies.getLast();
   }
 
   public void addEntityTransform(GtfsEntityTransformStrategy entityTransform) {

@@ -56,7 +56,7 @@ public class RetainUpFromPolygon implements GtfsTransformStrategy {
 
     // remove non retained objects
     for (Class<?> entityClass : GtfsEntitySchemaFactory.getEntityClasses()) {
-      List<Object> objectsToRemove = new ArrayList<Object>();
+      List<Object> objectsToRemove = new ArrayList<>();
       for (Object entity : gtfsMutableRelationalDao.getAllEntitiesForType(entityClass)) {
         if (!graph.isRetained(entity)) {
           objectsToRemove.add(entity);
@@ -80,7 +80,7 @@ public class RetainUpFromPolygon implements GtfsTransformStrategy {
       return wktReader.read(polygonWKT);
     } catch (ParseException e) {
       throw new IllegalArgumentException(
-          String.format("Error parsing WKT string: %s", e.getMessage()), e);
+          "Error parsing WKT string: %s".formatted(e.getMessage()), e);
     }
   }
 

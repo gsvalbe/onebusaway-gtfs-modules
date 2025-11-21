@@ -21,7 +21,7 @@ jobs:
       LANG: ${{ matrix.locale }}
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
 
     - name: Set locale to ${{ matrix.locale }}
       run: |
@@ -38,10 +38,10 @@ jobs:
 
     - run: date
 
-    - uses: actions/setup-java@v4
+    - uses: actions/setup-java@v5
       with:
         distribution: 'temurin'
-        java-version: '17'
+        java-version: '21'
         cache: 'maven'
 
     - name: Test project with Maven
@@ -52,16 +52,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '21'
           cache: 'maven'
 
       - name: Run CLI integration tests
         run: ./cli-tests/cli-tests.sh
+
+      - name: Archive GTFS files
+        uses: actions/upload-artifact@v5
+        with:
+          name: gtfs-files
+          path: '*.gtfs.zip'
 
   container-image:
     if: github.repository_owner == 'onebusaway' && github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -73,12 +79,12 @@ jobs:
       CONTAINER_REGISTRY_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '21'
           cache: 'maven'
 
       - name: Build container image tarball
@@ -93,11 +99,11 @@ jobs:
       contents: read
       packages: write
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-java@v5
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '21'
           cache: 'maven'
 
       - name: Publish package

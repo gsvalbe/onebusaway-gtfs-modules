@@ -13,12 +13,14 @@
  */
 package org.onebusaway.gtfs.serialization;
 
+import static com.google.common.truth.Truth.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -38,12 +40,12 @@ import org.onebusaway.gtfs.model.StopAreaElement;
 import org.onebusaway.gtfs.services.GtfsRelationalDao;
 import org.onebusaway.gtfs.services.MockGtfs;
 
-public class FaresV2ReaderTest extends BaseGtfsTest {
+class FaresV2ReaderTest extends BaseGtfsTest {
 
   private static final String AGENCY_ID = "1";
 
   @Test
-  public void turlockFaresV2() throws CsvEntityIOException, IOException {
+  void turlockFaresV2() throws CsvEntityIOException, IOException {
     String agencyId = "1642";
     GtfsRelationalDao dao = processFeed(GtfsTestData.getTurlockFaresV2(), agencyId, false);
 
@@ -69,8 +71,10 @@ public class FaresV2ReaderTest extends BaseGtfsTest {
     assertEquals("Persons with Disabilities", cat.getName());
     assertEquals("disabled", cat.getId().getId());
 
-    List<FareLegRule> fareLegRules = new ArrayList<>(dao.getAllFareLegRules());
+    var fareLegRules = new ArrayList<>(dao.getAllFareLegRules());
     assertEquals(12, fareLegRules.size());
+
+    fareLegRules.forEach(lr -> assertTrue(lr.getRulePriorityOption().isEmpty()));
 
     FareLegRule flr =
         fareLegRules.stream().sorted(Comparator.comparing(FareLegRule::getId)).findFirst().get();
@@ -101,7 +105,7 @@ public class FaresV2ReaderTest extends BaseGtfsTest {
   }
 
   @Test
-  public void mdotMetroFaresV2() throws CsvEntityIOException, IOException {
+  void mdotMetroFaresV2() throws CsvEntityIOException, IOException {
     String agencyId = "1";
     GtfsRelationalDao dao = processFeed(GtfsTestData.getMdotMetroFaresV2(), agencyId, false);
 
@@ -186,27 +190,27 @@ public class FaresV2ReaderTest extends BaseGtfsTest {
 
     List<Route> routes = new ArrayList<>(dao.getAllRoutes());
     assertEquals(1, routes.size());
-    assertEquals("core", routes.get(0).getNetworkId());
+    assertEquals("core", routes.getFirst().getNetworkId());
 
     assertFalse(dao.hasFaresV1());
     assertTrue(dao.hasFaresV2());
   }
 
   @Test
-  public void pierceTransitStopAreas() throws CsvEntityIOException, IOException {
+  void pierceTransitStopAreas() throws CsvEntityIOException, IOException {
     var dao = processFeed(GtfsTestData.getPierceTransitFlex(), AGENCY_ID, false);
 
     var areaElements = List.copyOf(dao.getAllStopAreaElements());
     assertEquals(12, areaElements.size());
 
-    var first = areaElements.get(0);
+    var first = areaElements.getFirst();
     assertEquals("1_4210813", first.getArea().getId().toString());
     var stop = first.getStop();
     assertEquals("4210806", stop.getId().getId());
     assertEquals("Bridgeport Way & San Francisco Ave SW (Northbound)", stop.getName());
     assertSame(Stop.class, stop.getClass());
 
-    var area = areaElements.get(0);
+    var area = areaElements.getFirst();
 
     assertSame(Stop.class, area.getStop().getClass());
 
@@ -217,32 +221,59 @@ public class FaresV2ReaderTest extends BaseGtfsTest {
   }
 
   @Test
-  public void testFaresV2Distance() throws IOException {
+  void testFaresV2Distance() throws IOException {
     MockGtfs gtfs = MockGtfs.create();
     gtfs.putMinimal();
-    gtfs.putLines("fare_products.txt", "fare_product_id, amount, currency", "" + "fare_1,5,EUR");
+    gtfs.putLines("fare_products.txt", "fare_product_id, amount, currency", "fare_1,5,EUR");
     gtfs.putLines(
         "fare_leg_rules.txt",
         "network_id,min_distance,max_distance,distance_type,fare_product_id",
         "bus,0,3,1,fare_1");
     GtfsRelationalDao dao = processFeed(gtfs.getPath(), "1", false);
-    assertTrue(
-        dao.getAllFareLegRules().stream()
-                .map(fareLegRule -> fareLegRule.getMaxDistance())
-                .findFirst()
-                .get()
-            == 3.0);
-    assertTrue(
-        dao.getAllFareLegRules().stream()
-                .map(fareLegRule -> fareLegRule.getMinDistance())
-                .findFirst()
-                .get()
-            == 0.0);
-    assertTrue(
-        dao.getAllFareLegRules().stream()
-                .map(fareLegRule -> fareLegRule.getDistanceType())
-                .findFirst()
-                .get()
-            == 1);
+    assertEquals(
+        3.0, dao.getAllFareLegRules().stream().map(FareLegRule::getMaxDistance).findFirst().get());
+    assertEquals(
+        0.0, dao.getAllFareLegRules().stream().map(FareLegRule::getMinDistance).findFirst().get());
+    assertEquals(
+        1,
+        (int)
+            dao.getAllFareLegRules().stream().map(FareLegRule::getDistanceType).findFirst().get());
+  }
+
+  @Test
+  void routeNetworkAssignments() throws CsvEntityIOException, IOException {
+    var dao = processFeed(GtfsTestData.sandyFlexFaresV2(), AGENCY_ID, false);
+
+    var assignments = List.copyOf(dao.getAllRouteNetworkAssignments());
+
+    assertEquals(7, assignments.size());
+
+    var first = assignments.getFirst();
+
+    assertEquals("1116", first.getRoute().getId().getId());
+    assertEquals("188", first.getNetworkId());
+  }
+
+  @Test
+  void rulePriority() throws CsvEntityIOException, IOException {
+    var dao = processFeed(GtfsTestData.sandyFlexFaresV2(), AGENCY_ID, false);
+    var rules = List.copyOf(dao.getAllFareLegRules());
+    assertThat(rules).hasSize(4);
+
+    assertThat(rules.getFirst().getRulePriorityOption()).isPresent();
+    assertThat(rules.getLast().getRulePriorityOption()).isEmpty();
+  }
+
+  @Test
+  void timeframes() throws CsvEntityIOException, IOException {
+    var dao = processFeed(GtfsTestData.ctran(), AGENCY_ID, false);
+    var timeframes = List.copyOf(dao.getAllTimeframes());
+    assertThat(timeframes).hasSize(10);
+
+    var first = timeframes.getFirst();
+    assertEquals("1_REGULAR|1-WKDY|15:00|23:59", first.getId().getId());
+    assertEquals("1-WKDY", first.getServiceId());
+    assertEquals(LocalTime.of(15, 0), first.getStartTime());
+    assertEquals(LocalTime.of(23, 59), first.getEndTime());
   }
 }

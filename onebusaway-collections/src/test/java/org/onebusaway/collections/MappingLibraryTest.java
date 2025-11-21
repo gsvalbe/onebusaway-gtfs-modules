@@ -13,14 +13,14 @@
  */
 package org.onebusaway.collections;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.onebusaway.collections.tuple.Pair;
 import org.onebusaway.collections.tuple.Tuples;
 
@@ -35,13 +35,13 @@ public class MappingLibraryTest {
 
     List<String> values = MappingLibrary.map(asList, "first");
     assertEquals(3, values.size());
-    assertEquals("a", values.get(0));
+    assertEquals("a", values.getFirst());
     assertEquals("c", values.get(1));
     assertEquals("e", values.get(2));
 
     values = MappingLibrary.map(asList, "second");
     assertEquals(3, values.size());
-    assertEquals("b", values.get(0));
+    assertEquals("b", values.getFirst());
     assertEquals("d", values.get(1));
     assertEquals("f", values.get(2));
   }
@@ -110,7 +110,7 @@ public class MappingLibraryTest {
   }
 
   private <T> Set<T> set(T... objects) {
-    Set<T> set = new HashSet<T>();
+    Set<T> set = new HashSet<>();
     for (T object : objects) set.add(object);
     return set;
   }

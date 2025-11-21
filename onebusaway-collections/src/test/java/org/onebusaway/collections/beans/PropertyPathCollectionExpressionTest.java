@@ -13,13 +13,13 @@
  */
 package org.onebusaway.collections.beans;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class PropertyPathCollectionExpressionTest {
 
@@ -48,10 +48,10 @@ public class PropertyPathCollectionExpressionTest {
 
     {
       PropertyPathCollectionExpression expression = new PropertyPathCollectionExpression("values");
-      List<PropertyInvocationResult> results = new ArrayList<PropertyInvocationResult>();
+      List<PropertyInvocationResult> results = new ArrayList<>();
       expression.invokeReturningFullResult(a, results);
       assertEquals(1, results.size());
-      PropertyInvocationResult result = results.get(0);
+      PropertyInvocationResult result = results.getFirst();
       assertSame(a, result.parent);
       assertEquals("values", result.propertyName);
       assertSame(b, result.value);
@@ -60,10 +60,10 @@ public class PropertyPathCollectionExpressionTest {
     {
       PropertyPathCollectionExpression expression =
           new PropertyPathCollectionExpression("values.value");
-      List<PropertyInvocationResult> results = new ArrayList<PropertyInvocationResult>();
+      List<PropertyInvocationResult> results = new ArrayList<>();
       expression.invokeReturningFullResult(a, results);
       assertEquals(1, results.size());
-      PropertyInvocationResult result = results.get(0);
+      PropertyInvocationResult result = results.getFirst();
       assertSame(b, result.parent);
       assertEquals("value", result.propertyName);
       assertSame("b", result.value);
@@ -74,7 +74,7 @@ public class PropertyPathCollectionExpressionTest {
 
     private String value;
 
-    private List<TestObject> values = new ArrayList<TestObject>();
+    private List<TestObject> values = new ArrayList<>();
 
     public TestObject(String value) {
       this.value = value;

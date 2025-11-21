@@ -68,7 +68,7 @@ public class DefaultPropertyMethodResolver implements PropertyMethodResolver {
     try {
       if (targetType.isInterface()) {
         List<Method> methods = getCachedInterfaceMethods(targetType, propertyName, methodName);
-        if (methods.size() == 1) method = methods.get(0);
+        if (methods.size() == 1) method = methods.getFirst();
         else {
           throw new IllegalStateException(
               "Ambiguous implementation set for interface: "
@@ -103,7 +103,7 @@ public class DefaultPropertyMethodResolver implements PropertyMethodResolver {
     ScanResult scanResult =
         new ClassGraph().acceptPackages("org.onebusaway").enableClassInfo().scan();
 
-    List<Method> methods = new ArrayList<Method>();
+    List<Method> methods = new ArrayList<>();
     for (ClassInfo ci : scanResult.getClassesImplementing(targetType.getCanonicalName())) {
       try {
         if (matches(ci.getName(), targetType)) {

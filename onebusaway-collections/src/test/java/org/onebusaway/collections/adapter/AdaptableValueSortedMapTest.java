@@ -13,24 +13,22 @@
  */
 package org.onebusaway.collections.adapter;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.SortedMap;
 import java.util.TreeMap;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class AdaptableValueSortedMapTest {
 
   private SortedMap<Integer, String> _m2;
-  private TreeMap<Integer, TestBean> _m;
+  private SortedMap<Integer, TestBean> _m;
 
-  @Before
+  @BeforeEach
   public void before() {
 
-    _m = new TreeMap<Integer, TestBean>();
+    _m = new TreeMap<>();
     _m.put(1, new TestBean("a"));
     _m.put(2, new TestBean("b"));
     _m.put(3, new TestBean("c"));
@@ -55,8 +53,8 @@ public class AdaptableValueSortedMapTest {
   public void testSubMap() {
     SortedMap<Integer, String> m = _m2.subMap(1, 2);
     assertEquals(1, m.size());
-    assertEquals(new Integer(1), m.firstKey());
-    assertEquals(new Integer(1), m.lastKey());
+    assertEquals(Integer.valueOf(1), m.firstKey());
+    assertEquals(Integer.valueOf(1), m.lastKey());
     assertEquals("a", m.get(1));
   }
 
