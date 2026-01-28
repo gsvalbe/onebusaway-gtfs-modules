@@ -65,8 +65,8 @@ public class GtfsReaderTest extends BaseGtfsTest {
     gtfs.putLines(
         "routes.txt",
         "agency_id,route_id,route_short_name,route_long_name,route_type,route_desc,route_color,route_text_color,"
-            + "route_bikes_allowed,bikes_allowed,route_url,route_sort_order",
-        "1,R1,10,The Ten,3,route desc,FF0000,0000FF,1,2,http://agency.gov/route,100");
+            + "route_bikes_allowed,bikes_allowed,route_url,route_sort_order,region_id",
+        "1,R1,10,The Ten,3,route desc,FF0000,0000FF,1,2,http://agency.gov/route,100,nyc");
     gtfs.putLines(
         "trips.txt",
         "route_id,service_id,trip_id,trip_headsign,trip_short_name,direction_id,block_id,shape_id,route_short_name,"
@@ -116,6 +116,10 @@ public class GtfsReaderTest extends BaseGtfsTest {
         "0,0,20180101,20180601,1,1,1,1,1,0,0,1,1,34741338,538,15.2",
         "0,0,20180101,20180601,1,1,1,1,1,0,0,1,1,34741338,558,14.4",
         "0,0,20180101,20180601,1,1,1,1,1,0,0,1,1,34741339,2010,1.3");
+    gtfs.putLines(
+        "regions.txt",
+        "region_id,region_name,bounds,region_type",
+        "nyc,New York City,40.4774;-74.2591;40.9176;-73.7004,1");
 
     GtfsRelationalDao dao = processFeed(gtfs.getPath(), "1", false);
 
@@ -190,6 +194,7 @@ public class GtfsReaderTest extends BaseGtfsTest {
     assertEquals(2, route.getBikesAllowed());
     assertEquals("http://agency.gov/route", route.getUrl());
     assertEquals(100, route.getSortOrder());
+    assertEquals("nyc", route.getRegionId());
 
     Trip trip = dao.getTripForId(new AgencyAndId("1", "T1"));
     assertEquals(new AgencyAndId("1", "T1"), trip.getId());
@@ -303,6 +308,12 @@ public class GtfsReaderTest extends BaseGtfsTest {
     assertNotNull(riderships);
     assertEquals(2, riderships.size());
     assertEquals("34741338", riderships.get(0).getTripId());
+
+    Region region = dao.getAllRegions().iterator().next();
+    assertEquals(new AgencyAndId("1", "nyc"), region.getId());
+    assertEquals("New York City", region.getName());
+    assertEquals("40.4774;-74.2591;40.9176;-73.7004", region.getBounds());
+    assertEquals(1, region.getType());
   }
 
   @Test

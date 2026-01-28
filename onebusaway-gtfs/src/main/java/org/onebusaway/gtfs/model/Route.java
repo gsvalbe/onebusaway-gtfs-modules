@@ -65,6 +65,9 @@ public final class Route extends IdentityBean<AgencyAndId> {
   @CsvField(optional = true)
   private int sortOrder = MISSING_VALUE;
 
+  @CsvField(name = "region_id", optional = true)
+  private String regionId;
+
   public Route() {}
 
   public Route(Route r) {
@@ -185,6 +188,14 @@ public final class Route extends IdentityBean<AgencyAndId> {
 
   public void setNetworkId(String networkId) {
     this.networkId = networkId;
+  }
+
+  public String getRegionId() {
+    return regionId;
+  }
+
+  public void setRegionId(String regionId) {
+    this.regionId = regionId;
   }
 
   @Override

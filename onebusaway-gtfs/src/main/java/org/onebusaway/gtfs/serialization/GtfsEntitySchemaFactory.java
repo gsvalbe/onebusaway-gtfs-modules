@@ -68,6 +68,7 @@ public class GtfsEntitySchemaFactory {
     entityClasses.add(DirectionEntry.class);
     entityClasses.add(Icon.class);
     entityClasses.add(Network.class);
+    entityClasses.add(Region.class);
     return entityClasses;
   }
 

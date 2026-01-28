@@ -565,4 +565,8 @@ public class GtfsDataServiceImpl implements GtfsDataService {
   public Collection<DirectionEntry> getAllDirectionEntries() {
     return _dao.getAllDirectionEntries();
   }
+
+  public Collection<Region> getAllRegions() {
+    return _dao.getAllRegions();
+  }
 }

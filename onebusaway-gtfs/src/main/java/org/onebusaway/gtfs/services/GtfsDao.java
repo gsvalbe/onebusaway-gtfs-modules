@@ -242,4 +242,6 @@ public interface GtfsDao extends GenericDao {
   String getMetadata(String filename);
 
   void addMetadata(String filename, String content);
+
+  Collection<Region> getAllRegions();
 }
