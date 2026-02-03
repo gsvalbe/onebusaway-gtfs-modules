@@ -15,6 +15,7 @@ package org.onebusaway.gtfs.model;
 
 import org.onebusaway.csv_entities.schema.annotations.CsvField;
 import org.onebusaway.csv_entities.schema.annotations.CsvFields;
+import org.onebusaway.gtfs.serialization.mappings.EntityFieldMappingFactory;
 import org.onebusaway.gtfs.serialization.mappings.RouteAgencyFieldMappingFactory;
 import org.onebusaway.gtfs.serialization.mappings.RouteAgencyIdFieldMappingFactory;
 
@@ -65,8 +66,11 @@ public final class Route extends IdentityBean<AgencyAndId> {
   @CsvField(optional = true)
   private int sortOrder = MISSING_VALUE;
 
-  @CsvField(name = "region_id", optional = true)
-  private String regionId;
+  @CsvField(
+      name = "region_id",
+      optional = true,
+      mapping = EntityFieldMappingFactory.class)
+  private Region region = null;
 
   public Route() {}
 
@@ -82,6 +86,8 @@ public final class Route extends IdentityBean<AgencyAndId> {
     this.textColor = r.textColor;
     this.bikesAllowed = r.bikesAllowed;
     this.sortOrder = r.sortOrder;
+    this.region = r.region;
+    this.networkId = r.networkId;
   }
 
   public AgencyAndId getId() {
@@ -190,12 +196,12 @@ public final class Route extends IdentityBean<AgencyAndId> {
     this.networkId = networkId;
   }
 
-  public String getRegionId() {
-    return regionId;
+  public Region getRegion() {
+    return region;
   }
 
-  public void setRegionId(String regionId) {
-    this.regionId = regionId;
+  public void setRegion(Region region) {
+    this.region = region;
   }
 
   @Override

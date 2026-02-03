@@ -4,7 +4,7 @@ import org.onebusaway.csv_entities.schema.annotations.CsvField;
 import org.onebusaway.csv_entities.schema.annotations.CsvFields;
 import org.onebusaway.gtfs.serialization.mappings.DefaultAgencyIdFieldMappingFactory;
 
-@CsvFields(filename = "regions.txt", required = false)
+@CsvFields(filename = "regions.txt", required = false, prefix = "region_")
 public final class Region extends IdentityBean<AgencyAndId> {
 
   private static final long serialVersionUID = 1L;

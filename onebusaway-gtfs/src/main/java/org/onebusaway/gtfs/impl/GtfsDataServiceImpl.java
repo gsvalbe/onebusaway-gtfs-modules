@@ -238,6 +238,11 @@ public class GtfsDataServiceImpl implements GtfsDataService {
   }
 
   @Override
+  public Region getRegionForId(AgencyAndId id) {
+    return _dao.getRegionForId(id);
+  }
+
+  @Override
   public Collection<ShapePoint> getAllShapePoints() {
     return _dao.getAllShapePoints();
   }

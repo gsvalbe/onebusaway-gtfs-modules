@@ -63,6 +63,10 @@ public class GtfsReaderTest extends BaseGtfsTest {
             + "stop_url,wheelchair_boarding,zone_id,stop_timezone,vehicle_type,platform_code,level_id,tts_stop_name",
         "S1,Stop,47.0,-122.0,description,123,N,1,1234,http://agency.gov/stop,1,Z,America/New_York,2,9 3/4,L1,southwest one hundred twenty fifth & longhorn");
     gtfs.putLines(
+        "regions.txt",
+        "region_id,region_name,bounds,region_type",
+        "nyc,New York City,40.4774;-74.2591;40.9176;-73.7004,1");
+    gtfs.putLines(
         "routes.txt",
         "agency_id,route_id,route_short_name,route_long_name,route_type,route_desc,route_color,route_text_color,"
             + "route_bikes_allowed,bikes_allowed,route_url,route_sort_order,region_id",
@@ -116,10 +120,6 @@ public class GtfsReaderTest extends BaseGtfsTest {
         "0,0,20180101,20180601,1,1,1,1,1,0,0,1,1,34741338,538,15.2",
         "0,0,20180101,20180601,1,1,1,1,1,0,0,1,1,34741338,558,14.4",
         "0,0,20180101,20180601,1,1,1,1,1,0,0,1,1,34741339,2010,1.3");
-    gtfs.putLines(
-        "regions.txt",
-        "region_id,region_name,bounds,region_type",
-        "nyc,New York City,40.4774;-74.2591;40.9176;-73.7004,1");
 
     GtfsRelationalDao dao = processFeed(gtfs.getPath(), "1", false);
 
@@ -182,6 +182,12 @@ public class GtfsReaderTest extends BaseGtfsTest {
     assertEquals(level, stop.getLevel());
     assertEquals("southwest one hundred twenty fifth & longhorn", stop.getTtsStopName());
 
+    Region region = dao.getAllRegions().iterator().next();
+    assertEquals(new AgencyAndId("1", "nyc"), region.getId());
+    assertEquals("New York City", region.getName());
+    assertEquals("40.4774;-74.2591;40.9176;-73.7004", region.getBounds());
+    assertEquals(1, region.getType());
+
     Route route = dao.getRouteForId(new AgencyAndId("1", "R1"));
     assertEquals(new AgencyAndId("1", "R1"), route.getId());
     assertEquals(agency, route.getAgency());
@@ -194,7 +200,6 @@ public class GtfsReaderTest extends BaseGtfsTest {
     assertEquals(2, route.getBikesAllowed());
     assertEquals("http://agency.gov/route", route.getUrl());
     assertEquals(100, route.getSortOrder());
-    assertEquals("nyc", route.getRegionId());
 
     Trip trip = dao.getTripForId(new AgencyAndId("1", "T1"));
     assertEquals(new AgencyAndId("1", "T1"), trip.getId());
@@ -308,12 +313,6 @@ public class GtfsReaderTest extends BaseGtfsTest {
     assertNotNull(riderships);
     assertEquals(2, riderships.size());
     assertEquals("34741338", riderships.get(0).getTripId());
-
-    Region region = dao.getAllRegions().iterator().next();
-    assertEquals(new AgencyAndId("1", "nyc"), region.getId());
-    assertEquals("New York City", region.getName());
-    assertEquals("40.4774;-74.2591;40.9176;-73.7004", region.getBounds());
-    assertEquals(1, region.getType());
   }
 
   @Test

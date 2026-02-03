@@ -37,6 +37,7 @@ public class GtfsEntitySchemaFactory {
     entityClasses.add(Block.class);
     entityClasses.add(BookingRule.class);
     entityClasses.add(ShapePoint.class);
+    entityClasses.add(Region.class);
     entityClasses.add(Route.class);
     entityClasses.add(RouteStop.class);
     entityClasses.add(RouteShape.class);
@@ -68,7 +69,6 @@ public class GtfsEntitySchemaFactory {
     entityClasses.add(DirectionEntry.class);
     entityClasses.add(Icon.class);
     entityClasses.add(Network.class);
-    entityClasses.add(Region.class);
     return entityClasses;
   }
 
@@ -86,6 +86,7 @@ public class GtfsEntitySchemaFactory {
     comparators.put(ServiceCalendarDate.class, new ServiceCalendarDateComparator());
     comparators.put(Vehicle.class, getComparatorForIdentityBeanType(Vehicle.class));
     comparators.put(Icon.class, getComparatorForIdentityBeanType(Icon.class));
+    comparators.put(Region.class, getComparatorForIdentityBeanType(Region.class));
     return comparators;
   }
 

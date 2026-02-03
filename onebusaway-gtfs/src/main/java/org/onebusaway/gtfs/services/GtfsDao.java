@@ -134,6 +134,8 @@ public interface GtfsDao extends GenericDao {
 
   Route getRouteForId(AgencyAndId id);
 
+  Region getRegionForId(AgencyAndId id);
+
   /****
    * {@link ShapePoint} Methods
    ****/

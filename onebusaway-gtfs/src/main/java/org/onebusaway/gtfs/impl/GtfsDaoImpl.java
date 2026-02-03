@@ -220,6 +220,10 @@ public class GtfsDaoImpl extends GenericDaoImpl implements GtfsMutableDao {
     return getEntityForId(Route.class, id);
   }
 
+  public Region getRegionForId(AgencyAndId id) {
+    return getEntityForId(Region.class, id);
+  }
+
   public ShapePoint getShapePointForId(int id) {
     if (packShapePoints) {
       return shapePoints.get(id);

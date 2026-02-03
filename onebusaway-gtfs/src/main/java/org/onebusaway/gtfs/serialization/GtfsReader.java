@@ -64,6 +64,7 @@ public class GtfsReader extends CsvEntityReader {
     _entityClasses.add(Icon.class);
     _entityClasses.add(Area.class);
     _entityClasses.add(BookingRule.class);
+    _entityClasses.add(Region.class);
     _entityClasses.add(Route.class);
     _entityClasses.add(RouteStop.class);
     _entityClasses.add(RouteShape.class);
@@ -96,7 +97,6 @@ public class GtfsReader extends CsvEntityReader {
     _entityClasses.add(FacilityProperty.class);
     _entityClasses.add(DirectionEntry.class);
     _entityClasses.add(Network.class);
-    _entityClasses.add(Region.class);
 
     CsvTokenizerStrategy tokenizerStrategy = new CsvTokenizerStrategy();
     setTokenizerStrategy(tokenizerStrategy);
@@ -308,6 +308,8 @@ public class GtfsReader extends CsvEntityReader {
         registerAgencyId(Pathway.class, pathway.getId());
       } else if (entity instanceof final Level level) {
         registerAgencyId(Level.class, level.getId());
+      } else if (entity instanceof final Region region) {
+        registerAgencyId(Region.class, region.getId());
       } else if (entity instanceof final Route route) {
         registerAgencyId(Route.class, route.getId());
       } else if (entity instanceof final Trip trip) {
