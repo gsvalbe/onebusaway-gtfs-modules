@@ -13,8 +13,8 @@
  */
 package org.onebusaway.csv_entities;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -25,7 +25,7 @@ import java.io.StringReader;
 import java.util.Collections;
 import java.util.List;
 import java.util.zip.ZipFile;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.onebusaway.csv_entities.schema.DefaultEntitySchemaFactory;
 import org.onebusaway.csv_entities.schema.ExcludeOptionalAndMissingEntitySchemaFactory;
 import org.onebusaway.csv_entities.schema.annotations.CsvField;
@@ -38,7 +38,7 @@ public class ExtensionsTest {
     DefaultEntitySchemaFactory factory = new DefaultEntitySchemaFactory();
     factory.addExtension(BaseBean.class, ExtensionBean.class);
 
-    ListEntityHandler<BaseBean> handler = new ListEntityHandler<BaseBean>();
+    ListEntityHandler<BaseBean> handler = new ListEntityHandler<>();
 
     CsvEntityReader reader = new CsvEntityReader();
     reader.setEntitySchemaFactory(factory);
@@ -51,7 +51,7 @@ public class ExtensionsTest {
     assertEquals(2, beans.size());
 
     {
-      BaseBean bean = beans.get(0);
+      BaseBean bean = beans.getFirst();
       assertEquals("Cats", bean.getName());
       ExtensionBean extension = bean.getExtension(ExtensionBean.class);
       assertTrue(extension != null);

@@ -70,11 +70,11 @@ public class ShapeTransformStrategy implements GtfsTransformStrategy {
     }
 
     // Duplicate the list into something we can modify
-    shapePoints = new ArrayList<ShapePoint>(shapePoints);
+    shapePoints = new ArrayList<>(shapePoints);
 
     List<ShapePoint> segment = decode(shape);
-    ShapePoint from = segment.get(0);
-    ShapePoint to = segment.get(segment.size() - 1);
+    ShapePoint from = segment.getFirst();
+    ShapePoint to = segment.getLast();
 
     int fromIndex = 0;
     int toIndex = shapePoints.size() - 1;
@@ -131,7 +131,7 @@ public class ShapeTransformStrategy implements GtfsTransformStrategy {
     double lon = 0;
 
     int strIndex = 0;
-    List<ShapePoint> points = new ArrayList<ShapePoint>();
+    List<ShapePoint> points = new ArrayList<>();
 
     while (strIndex < pointString.length()) {
 

@@ -27,7 +27,7 @@ import org.onebusaway.gtfs.services.GenericMutableDao;
 public class GtfsTestData {
 
   private static String gtfsPath(String name) {
-    return String.format("org/onebusaway/gtfs/%s", name);
+    return "org/onebusaway/gtfs/%s".formatted(name);
   }
 
   public static final String CALTRAIN_GTFS = gtfsPath("caltrain_20090308_1937.zip");
@@ -36,21 +36,7 @@ public class GtfsTestData {
 
   public static final String BART_GTFS = gtfsPath("bart.zip");
 
-  public static final String TEST_AGENCY_GTFS = gtfsPath("testagency");
-
-  public static final String TURLOCK_FARES_V2 = gtfsPath("turlock-fares-v2");
-
-  public static final String MDOT_FARES_V2 = gtfsPath("mdot-metro-fares-v2");
-
-  public static final String PIERCE_TRANSIT_FLEX = gtfsPath("piercetransit-stop-areas-flex");
-
-  public static final String BROWN_COUNTY_FLEX = gtfsPath("brown-county-flex");
-
-  public static final String AUBURN_TRANSIT_FLEX = gtfsPath("auburn-transit-flex");
-
   public static final String LOCATIONS_GEOJSON = gtfsPath("locations.geojson");
-
-  public static final String TEST_AGENCY_VEHICLES_EXT_GTFS = gtfsPath("testagency-vehicles-ext");
 
   public static File getCaltrainGtfs() {
     return getResourceAsTemporaryFile(CALTRAIN_GTFS);
@@ -69,32 +55,39 @@ public class GtfsTestData {
   }
 
   public static File getTestAgencyGtfs() {
-    return new File("src/test/resources", TEST_AGENCY_GTFS);
-    // return getResourceAsTemporaryFile(TEST_AGENCY_GTFS);
+    return new File("src/test/resources", gtfsPath("testagency"));
   }
 
   public static File getTurlockFaresV2() {
-    return new File("src/test/resources", TURLOCK_FARES_V2);
+    return new File("src/test/resources", gtfsPath("turlock-fares-v2"));
   }
 
   public static File getMdotMetroFaresV2() {
-    return new File("src/test/resources", MDOT_FARES_V2);
+    return new File("src/test/resources", gtfsPath("mdot-metro-fares-v2"));
   }
 
   public static File getPierceTransitFlex() {
-    return new File("src/test/resources", PIERCE_TRANSIT_FLEX);
+    return new File("src/test/resources", gtfsPath("piercetransit-stop-areas-flex"));
+  }
+
+  public static File sandyFlexFaresV2() {
+    return new File("src/test/resources", gtfsPath("sandy-flex-fares-v2"));
   }
 
   public static File getBrownCountyFlex() {
-    return new File("src/test/resources", BROWN_COUNTY_FLEX);
+    return new File("src/test/resources", gtfsPath("brown-county-flex"));
   }
 
   public static File getAuburnTransitFlex() {
-    return new File("src/test/resources", AUBURN_TRANSIT_FLEX);
+    return new File("src/test/resources", gtfsPath("auburn-transit-flex"));
+  }
+
+  public static File ctran() {
+    return new File("src/test/resources", gtfsPath("ctran-fares-v2"));
   }
 
   public static File getTestAgencyVehiclesExt() {
-    return new File("src/test/resources", TEST_AGENCY_VEHICLES_EXT_GTFS);
+    return new File("src/test/resources", gtfsPath("testagency-vehicles-ext"));
   }
 
   public static <T extends GenericMutableDao> void readGtfs(
@@ -139,7 +132,7 @@ public class GtfsTestData {
   public static <T> List<T> grep(Iterable<T> elements, String propertyExpression, Object value) {
 
     String[] properties = propertyExpression.split("\\.");
-    List<T> matches = new ArrayList<T>();
+    List<T> matches = new ArrayList<>();
 
     for (T element : elements) {
       Object v = element;

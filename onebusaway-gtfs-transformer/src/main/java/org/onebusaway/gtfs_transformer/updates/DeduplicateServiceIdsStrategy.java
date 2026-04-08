@@ -50,19 +50,19 @@ public class DeduplicateServiceIdsStrategy implements GtfsTransformStrategy {
   public void run(TransformContext context, GtfsMutableRelationalDao dao) {
     CalendarService service = CalendarServiceDataFactoryImpl.createService(dao);
     Map<Set<ServiceDate>, List<AgencyAndId>> serviceIdsByServiceDates =
-        new FactoryMap<Set<ServiceDate>, List<AgencyAndId>>(new ArrayList<AgencyAndId>());
+        new FactoryMap<>(new ArrayList<AgencyAndId>());
     for (AgencyAndId serviceId : dao.getAllServiceIds()) {
       Set<ServiceDate> serviceDates = service.getServiceDatesForServiceId(serviceId);
       serviceIdsByServiceDates.get(serviceDates).add(serviceId);
     }
 
-    Map<AgencyAndId, AgencyAndId> serviceIdMapping = new HashMap<AgencyAndId, AgencyAndId>();
+    Map<AgencyAndId, AgencyAndId> serviceIdMapping = new HashMap<>();
     for (List<AgencyAndId> serviceIds : serviceIdsByServiceDates.values()) {
       Collections.sort(serviceIds);
       if (serviceIds.size() == 1) {
         continue;
       }
-      AgencyAndId target = serviceIds.get(0);
+      AgencyAndId target = serviceIds.getFirst();
       for (int i = 1; i < serviceIds.size(); ++i) {
         AgencyAndId source = serviceIds.get(i);
         serviceIdMapping.put(source, target);

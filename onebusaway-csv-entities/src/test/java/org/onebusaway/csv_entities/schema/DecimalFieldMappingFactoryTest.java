@@ -13,12 +13,12 @@
  */
 package org.onebusaway.csv_entities.schema;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.onebusaway.csv_entities.CsvEntityContext;
 import org.onebusaway.csv_entities.CsvEntityContextImpl;
 
@@ -34,7 +34,7 @@ public class DecimalFieldMappingFactoryTest {
 
     CsvEntityContext context = new CsvEntityContextImpl();
     BeanWrapper wrapped = BeanWrapperFactory.wrap(dummy);
-    Map<String, Object> values = new HashMap<String, Object>();
+    Map<String, Object> values = new HashMap<>();
     mapping.translateFromObjectToCSV(context, wrapped, values);
     assertEquals("3.14", values.get("value"));
   }
@@ -49,7 +49,7 @@ public class DecimalFieldMappingFactoryTest {
 
     CsvEntityContext context = new CsvEntityContextImpl();
     BeanWrapper wrapped = BeanWrapperFactory.wrap(dummy);
-    Map<String, Object> values = new HashMap<String, Object>();
+    Map<String, Object> values = new HashMap<>();
     mapping.translateFromObjectToCSV(context, wrapped, values);
     assertEquals("3,14", values.get("value"));
   }

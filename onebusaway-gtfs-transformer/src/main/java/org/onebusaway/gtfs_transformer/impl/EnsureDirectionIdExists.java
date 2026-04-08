@@ -21,12 +21,8 @@ import org.onebusaway.gtfs.model.Trip;
 import org.onebusaway.gtfs.services.GtfsMutableRelationalDao;
 import org.onebusaway.gtfs_transformer.services.GtfsTransformStrategy;
 import org.onebusaway.gtfs_transformer.services.TransformContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class EnsureDirectionIdExists implements GtfsTransformStrategy {
-
-  private final Logger _log = LoggerFactory.getLogger(CheckForLengthyRouteNames.class);
 
   @Override
   public String getName() {
@@ -47,8 +43,8 @@ public class EnsureDirectionIdExists implements GtfsTransformStrategy {
 
   private String getDirectionForTrip(GtfsMutableRelationalDao dao, Trip trip) {
     List<StopTime> stopTimes = dao.getStopTimesForTrip(trip);
-    Stop s1 = dao.getStopForId(stopTimes.get(0).getStop().getId());
-    Stop s2 = dao.getStopForId(stopTimes.get(stopTimes.size() - 1).getStop().getId());
+    Stop s1 = dao.getStopForId(stopTimes.getFirst().getStop().getId());
+    Stop s2 = dao.getStopForId(stopTimes.getLast().getStop().getId());
     return String.valueOf(getDirectionFromStops(s1, s2));
   }
 

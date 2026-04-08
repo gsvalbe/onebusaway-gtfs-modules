@@ -13,19 +13,18 @@
  */
 package org.onebusaway.collections;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class FactoryMapTest {
 
   @Test
   public void test() {
 
-    FactoryMap<String, List<String>> m =
-        new FactoryMap<String, List<String>>(new ArrayList<String>());
+    FactoryMap<String, List<String>> m = new FactoryMap<>(new ArrayList<String>());
 
     List<String> list = m.get("a");
     assertEquals(0, list.size());
@@ -41,11 +40,11 @@ public class FactoryMapTest {
 
     list = m.get("b");
     assertEquals(1, list.size());
-    assertEquals("1", list.get(0));
+    assertEquals("1", list.getFirst());
 
     list = m.get("a");
     assertEquals(2, list.size());
-    assertEquals("1", list.get(0));
+    assertEquals("1", list.getFirst());
     assertEquals("2", list.get(1));
 
     m.remove("b");

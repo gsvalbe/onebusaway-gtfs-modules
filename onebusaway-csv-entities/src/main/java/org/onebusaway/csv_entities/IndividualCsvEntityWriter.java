@@ -29,7 +29,7 @@ class IndividualCsvEntityWriter implements EntityHandler {
 
   private final PrintWriter _writer;
 
-  private final List<String> _fieldNames = new ArrayList<String>();
+  private final List<String> _fieldNames = new ArrayList<>();
 
   private final EntitySchema _schema;
 
@@ -75,8 +75,7 @@ class IndividualCsvEntityWriter implements EntityHandler {
     for (FieldMapping field : _schema.getFields()) {
       field.translateFromObjectToCSV(_context, wrapper, csvValues);
     }
-    if (object instanceof HasExtensions) {
-      HasExtensions hasExtensions = (HasExtensions) object;
+    if (object instanceof HasExtensions hasExtensions) {
       for (ExtensionEntitySchema extensionSchema : _schema.getExtensions()) {
         Object extension = hasExtensions.getExtension(extensionSchema.getEntityClass());
         if (extension != null) {
@@ -88,7 +87,7 @@ class IndividualCsvEntityWriter implements EntityHandler {
       }
     }
 
-    List<String> values = new ArrayList<String>(csvValues.size());
+    List<String> values = new ArrayList<>(csvValues.size());
     for (String fieldName : _fieldNames) {
       Object value = csvValues.get(fieldName);
       if (value == null) value = "";

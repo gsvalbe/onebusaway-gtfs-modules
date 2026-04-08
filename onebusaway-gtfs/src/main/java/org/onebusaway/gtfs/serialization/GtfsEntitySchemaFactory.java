@@ -30,7 +30,7 @@ import org.onebusaway.gtfs.serialization.comparators.StopTimeComparator;
 public class GtfsEntitySchemaFactory {
 
   public static List<Class<?>> getEntityClasses() {
-    List<Class<?>> entityClasses = new ArrayList<Class<?>>();
+    List<Class<?>> entityClasses = new ArrayList<>();
     entityClasses.add(FeedInfo.class);
     entityClasses.add(Agency.class);
     entityClasses.add(Area.class);
@@ -39,8 +39,7 @@ public class GtfsEntitySchemaFactory {
     entityClasses.add(ShapePoint.class);
     entityClasses.add(Region.class);
     entityClasses.add(Route.class);
-    entityClasses.add(RouteStop.class);
-    entityClasses.add(RouteShape.class);
+    entityClasses.add(RouteNetworkAssignment.class);
     entityClasses.add(Level.class);
     entityClasses.add(Stop.class);
     entityClasses.add(StopAreaElement.class);
@@ -69,11 +68,12 @@ public class GtfsEntitySchemaFactory {
     entityClasses.add(DirectionEntry.class);
     entityClasses.add(Icon.class);
     entityClasses.add(Network.class);
+    entityClasses.add(Timeframe.class);
     return entityClasses;
   }
 
   public static Map<Class<?>, Comparator<?>> getEntityComparators() {
-    Map<Class<?>, Comparator<?>> comparators = new HashMap<Class<?>, Comparator<?>>();
+    Map<Class<?>, Comparator<?>> comparators = new HashMap<>();
     comparators.put(Agency.class, getComparatorForIdentityBeanType(Agency.class));
     comparators.put(Area.class, getComparatorForIdentityBeanType(Area.class));
     comparators.put(Block.class, getComparatorForIdentityBeanType(Block.class));
@@ -103,7 +103,7 @@ public class GtfsEntitySchemaFactory {
 
   private static <T extends IdentityBean<?>> Comparator<T> getComparatorForIdentityBeanType(
       Class<T> entityType) {
-    return new Comparator<T>() {
+    return new Comparator<>() {
       @SuppressWarnings("unchecked")
       @Override
       public int compare(T o1, T o2) {

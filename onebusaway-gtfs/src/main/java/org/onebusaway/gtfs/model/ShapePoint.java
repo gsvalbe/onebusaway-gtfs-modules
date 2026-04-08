@@ -13,22 +13,23 @@
  */
 package org.onebusaway.gtfs.model;
 
+import java.io.Serial;
 import org.onebusaway.csv_entities.schema.annotations.CsvField;
 import org.onebusaway.csv_entities.schema.annotations.CsvFields;
-import org.onebusaway.gtfs.serialization.mappings.DefaultAgencyIdFieldMappingFactory;
+import org.onebusaway.gtfs.serialization.mappings.InternAgencyIdFieldMappingFactory;
 import org.onebusaway.gtfs.serialization.mappings.LatLonFieldMappingFactory;
 
 @CsvFields(filename = "shapes.txt", required = false)
 public final class ShapePoint extends IdentityBean<Integer> implements Comparable<ShapePoint> {
 
-  private static final long serialVersionUID = 1L;
+  @Serial private static final long serialVersionUID = 1L;
 
   public static final double MISSING_VALUE = -999;
 
   @CsvField(ignore = true)
   private int id;
 
-  @CsvField(mapping = DefaultAgencyIdFieldMappingFactory.class)
+  @CsvField(mapping = InternAgencyIdFieldMappingFactory.class)
   private AgencyAndId shapeId;
 
   @CsvField(name = "shape_pt_sequence")

@@ -13,17 +13,19 @@
  */
 package org.onebusaway.gtfs.model;
 
+import java.io.Serial;
 import org.onebusaway.csv_entities.schema.annotations.CsvField;
 import org.onebusaway.csv_entities.schema.annotations.CsvFields;
 import org.onebusaway.csv_entities.schema.annotations.Experimental;
 import org.onebusaway.gtfs.serialization.mappings.DefaultAgencyIdFieldMappingFactory;
 import org.onebusaway.gtfs.serialization.mappings.EntityFieldMappingFactory;
+import org.onebusaway.gtfs.serialization.mappings.InternAgencyIdFieldMappingFactory;
 import org.onebusaway.gtfs.serialization.mappings.TripAgencyIdFieldMappingFactory;
 
 @CsvFields(filename = "trips.txt")
 public final class Trip extends IdentityBean<AgencyAndId> {
 
-  private static final long serialVersionUID = 3L;
+  @Serial private static final long serialVersionUID = 3L;
 
   @CsvField(name = "trip_id", mapping = TripAgencyIdFieldMappingFactory.class)
   private AgencyAndId id;
@@ -46,7 +48,7 @@ public final class Trip extends IdentityBean<AgencyAndId> {
   @CsvField(optional = true)
   private String blockId;
 
-  @CsvField(optional = true, mapping = DefaultAgencyIdFieldMappingFactory.class)
+  @CsvField(optional = true, mapping = InternAgencyIdFieldMappingFactory.class)
   private AgencyAndId shapeId;
 
   @CsvField(optional = true, defaultValue = "0")

@@ -13,6 +13,7 @@
  */
 package org.onebusaway.gtfs.model.calendar;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -29,10 +30,9 @@ import java.util.Set;
 public class ServiceIdIntervals
     implements Serializable, Iterable<Map.Entry<LocalizedServiceId, ServiceInterval>> {
 
-  private static final long serialVersionUID = 1L;
+  @Serial private static final long serialVersionUID = 1L;
 
-  private Map<LocalizedServiceId, ServiceInterval> _intervals =
-      new HashMap<LocalizedServiceId, ServiceInterval>();
+  private Map<LocalizedServiceId, ServiceInterval> _intervals = new HashMap<>();
 
   public void addStopTime(LocalizedServiceId serviceId, int arrivalTime, int departureTime) {
 

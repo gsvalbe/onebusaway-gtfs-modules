@@ -53,12 +53,12 @@ public class CalendarSimplicationLibraryTest {
     AgencyAndId updatedId = new AgencyAndId("a0", "sidX");
     ServiceCalendarSummary summary =
         _library.getSummaryForServiceDates(calendarService.getServiceDatesForServiceId(originalId));
-    List<Object> newEntities = new ArrayList<Object>();
+    List<Object> newEntities = new ArrayList<>();
     _library.computeSimplifiedCalendar(updatedId, summary, newEntities);
 
     List<ServiceCalendar> calendars = getEntities(newEntities, ServiceCalendar.class);
     assertEquals(1, calendars.size());
-    ServiceCalendar calendar = calendars.get(0);
+    ServiceCalendar calendar = calendars.getFirst();
     assertEquals(updatedId, calendar.getServiceId());
     assertEquals(new ServiceDate(2012, 03, 05), calendar.getStartDate());
     assertEquals(new ServiceDate(2012, 03, 30), calendar.getEndDate());
@@ -72,7 +72,7 @@ public class CalendarSimplicationLibraryTest {
 
     List<ServiceCalendarDate> calendarDates = getEntities(newEntities, ServiceCalendarDate.class);
     assertEquals(1, calendarDates.size());
-    ServiceCalendarDate date = calendarDates.get(0);
+    ServiceCalendarDate date = calendarDates.getFirst();
     assertEquals(updatedId, date.getServiceId());
     assertEquals(new ServiceDate(2012, 03, 22), date.getDate());
     assertEquals(ServiceCalendarDate.EXCEPTION_TYPE_REMOVE, date.getExceptionType());
@@ -80,7 +80,7 @@ public class CalendarSimplicationLibraryTest {
 
   @SuppressWarnings("unchecked")
   private <T> List<T> getEntities(List<Object> entities, Class<T> targetType) {
-    List<T> matching = new ArrayList<T>();
+    List<T> matching = new ArrayList<>();
     for (Object entity : entities) {
       if (targetType.isAssignableFrom(entity.getClass())) {
         matching.add((T) entity);

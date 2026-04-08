@@ -24,7 +24,7 @@ public class ExcludeOptionalAndMissingEntitySchemaFactory implements EntitySchem
 
   private final EntitySchemaFactory _source;
 
-  private Map<Class<?>, EntitySchema> _schemas = new HashMap<Class<?>, EntitySchema>();
+  private Map<Class<?>, EntitySchema> _schemas = new HashMap<>();
 
   public ExcludeOptionalAndMissingEntitySchemaFactory(EntitySchemaFactory source) {
     _source = source;
@@ -84,8 +84,8 @@ public class ExcludeOptionalAndMissingEntitySchemaFactory implements EntitySchem
   private boolean allExtensionValuesAreMissingAndOptional(
       FieldMapping field, Class<?> extensionType, Iterable<Object> entities) {
     for (Object entity : entities) {
-      if (entity instanceof HasExtensions) {
-        Object extension = ((HasExtensions) entity).getExtension(extensionType);
+      if (entity instanceof HasExtensions extensions) {
+        Object extension = extensions.getExtension(extensionType);
         if (extension != null) {
           if (fieldIsNotMissingOrOptional(field, extension)) return false;
         }

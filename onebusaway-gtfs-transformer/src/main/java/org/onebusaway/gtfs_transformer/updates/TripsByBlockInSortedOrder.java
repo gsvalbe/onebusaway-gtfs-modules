@@ -19,6 +19,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 import org.onebusaway.collections.tuple.T2;
 import org.onebusaway.gtfs.model.AgencyAndId;
 import org.onebusaway.gtfs.model.StopTime;
@@ -33,8 +34,8 @@ public class TripsByBlockInSortedOrder {
 
   public static Map<String, List<Trip>> getTripsByBlockInSortedOrder(GtfsMutableRelationalDao dao) {
 
-    Map<String, List<Trip>> tripsByBlockId = new HashMap<String, List<Trip>>();
-    Map<Trip, Integer> averageStopTimeByTrip = new HashMap<Trip, Integer>();
+    Map<String, List<Trip>> tripsByBlockId = new HashMap<>();
+    Map<Trip, Integer> averageStopTimeByTrip = new HashMap<>();
 
     int totalTrips = 0;
     int tripsWithoutStopTimes = 0;
@@ -46,11 +47,11 @@ public class TripsByBlockInSortedOrder {
       String blockId = trip.getBlockId();
 
       // Generate a random block id if none is present so we get no collisions
-      if (blockId == null) blockId = trip.getId() + "-" + Math.random();
+      if (blockId == null) blockId = trip.getId() + "-" + ThreadLocalRandom.current().nextDouble();
 
       List<Trip> trips = tripsByBlockId.get(blockId);
       if (trips == null) {
-        trips = new ArrayList<Trip>();
+        trips = new ArrayList<>();
         tripsByBlockId.put(blockId, trips);
       }
       trips.add(trip);
@@ -90,8 +91,8 @@ public class TripsByBlockInSortedOrder {
   public static Map<T2, List<Trip>> getTripsByBlockAndServiceIdInSortedOrder(
       GtfsMutableRelationalDao dao) {
 
-    Map<T2, List<Trip>> tripsByBlockAndServiceId = new HashMap<T2, List<Trip>>();
-    Map<Trip, Integer> averageStopTimeByTrip = new HashMap<Trip, Integer>();
+    Map<T2, List<Trip>> tripsByBlockAndServiceId = new HashMap<>();
+    Map<Trip, Integer> averageStopTimeByTrip = new HashMap<>();
 
     int totalTrips = 0;
     int tripsWithoutStopTimes = 0;
@@ -103,12 +104,12 @@ public class TripsByBlockInSortedOrder {
       String blockId = trip.getBlockId();
 
       // Generate a random block id if none is present so we get no collisions
-      if (blockId == null) blockId = trip.getId() + "-" + Math.random();
+      if (blockId == null) blockId = trip.getId() + "-" + ThreadLocalRandom.current().nextDouble();
       T2 key = new T2Impl(trip.getServiceId(), blockId);
 
       List<Trip> trips = tripsByBlockAndServiceId.get(key);
       if (trips == null) {
-        trips = new ArrayList<Trip>();
+        trips = new ArrayList<>();
         tripsByBlockAndServiceId.put(key, trips);
       }
       trips.add(trip);

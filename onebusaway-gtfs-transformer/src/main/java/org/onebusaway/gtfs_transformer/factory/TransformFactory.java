@@ -78,20 +78,20 @@ public class TransformFactory {
   private static final String ARG_COLLECTION = "collection";
 
   private static final Set<String> _excludeForObjectSpec =
-      new HashSet<String>(Arrays.asList(ARG_FILE, ARG_CLASS));
+      new HashSet<>(Arrays.asList(ARG_FILE, ARG_CLASS));
 
   private static final Set<String> _excludeForMatchSpec =
-      new HashSet<String>(Arrays.asList(ARG_FILE, ARG_CLASS, ARG_COLLECTION));
+      new HashSet<>(Arrays.asList(ARG_FILE, ARG_CLASS, ARG_COLLECTION));
 
-  private static Pattern _anyMatcher = Pattern.compile("^any\\((.*)\\)$");
+  private static final Pattern _anyMatcher = Pattern.compile("^any\\((.*)\\)$");
 
-  private static Pattern _pathMatcher = Pattern.compile("^path\\((.*)\\)$");
+  private static final Pattern _pathMatcher = Pattern.compile("^path\\((.*)\\)$");
 
-  private static Pattern _replaceMatcher = Pattern.compile("^s/(.*)/(.*)/$");
+  private static final Pattern _replaceMatcher = Pattern.compile("^s/(.*)/(.*)/$");
 
   private final GtfsTransformer _transformer;
 
-  private List<String> _entityPackages = new ArrayList<String>();
+  private final List<String> _entityPackages = new ArrayList<>();
 
   private final EntitySchemaCache _schemaCache = new EntitySchemaCache();
 
@@ -183,8 +183,6 @@ public class TransformFactory {
           handleTransformOperation(line, json, new UpdateTripHeadsignByDestinationStrategy());
         } else if (opType.equals("update_trip_headsign_exclude_nonreference")) {
           handleTransformOperation(line, json, new UpdateTripHeadsignExcludeNonreference());
-        } else if (opType.equals("update_trip_headsign_by_reference")) {
-          handleTransformOperation(line, json, new UpdateTripHeadsignByReference());
         } else if (opType.equals("update_trip_headsign_if_null")) {
           handleTransformOperation(line, json, new UpdateTripHeadsignIfNull());
         } else if (opType.equals("update_trip_headsign_railroad_convention")) {
@@ -209,8 +207,6 @@ public class TransformFactory {
           handleTransformOperation(line, json, new MergeRouteFromReferenceStrategy());
         } else if (opType.equals("merge_route_five")) {
           handleTransformOperation(line, json, new MergeRouteFive());
-        } else if (opType.equals("update_stop_id_by_id")) {
-          handleTransformOperation(line, json, new UpdateStopIdById());
         } else if (opType.equals("update_route_name")) {
           handleTransformOperation(line, json, new UpdateRouteNames());
         } else if (opType.equals("validate_gtfs")) {
@@ -255,13 +251,9 @@ public class TransformFactory {
           handleTransformOperation(line, json, new VerifyReferenceService());
         } else if (opType.equals("sanitize_for_api_access")) {
           handleTransformOperation(line, json, new SanitizeForApiAccess());
-        } else if (opType.equals("add_omny_subway_data")) {
-          handleTransformOperation(line, json, new AddOmnySubwayData());
         } else if (opType.equals("add_omny_lirr_data")) {
           handleTransformOperation(line, json, new AddOmnyLIRRData());
         } else if (opType.equals("add_omny_bus_data")) {
-          handleTransformOperation(line, json, new AddOmnyBusData());
-        } else if (opType.equals("verify_route_ids")) {
           handleTransformOperation(line, json, new VerifyRouteIds());
         } else if (opType.equals("KCMSuite")) {
           String baseUrl = "https://raw.github.com/wiki/camsys/onebusaway-application-modules";
@@ -329,7 +321,7 @@ public class TransformFactory {
       String factoryType = json.getString("factory");
       try {
         Class<?> clazz = Class.forName(factoryType);
-        Object factoryObj = clazz.newInstance();
+        Object factoryObj = clazz.getDeclaredConstructor().newInstance();
         if (!(factoryObj instanceof EntityTransformStrategy)) {
           throw new TransformSpecificationException(
               "factory object is not an instance of EntityTransformStrategy: " + clazz.getName(),
@@ -471,7 +463,7 @@ public class TransformFactory {
     Object factoryObj = null;
     try {
       Class<?> clazz = Class.forName(value);
-      factoryObj = clazz.newInstance();
+      factoryObj = clazz.getDeclaredConstructor().newInstance();
     } catch (Exception ex) {
       throw new TransformSpecificationException("error instantiating class: " + value, ex, line);
     }
@@ -485,16 +477,15 @@ public class TransformFactory {
 
     boolean added = false;
 
-    if (factoryObj instanceof GtfsTransformStrategy) {
-      _transformer.addTransform((GtfsTransformStrategy) factoryObj);
+    if (factoryObj instanceof GtfsTransformStrategy strategy) {
+      _transformer.addTransform(strategy);
       added = true;
     }
-    if (factoryObj instanceof GtfsEntityTransformStrategy) {
-      _transformer.addEntityTransform((GtfsEntityTransformStrategy) factoryObj);
+    if (factoryObj instanceof GtfsEntityTransformStrategy strategy) {
+      _transformer.addEntityTransform(strategy);
       added = true;
     }
-    if (factoryObj instanceof GtfsTransformStrategyFactory) {
-      GtfsTransformStrategyFactory factory = (GtfsTransformStrategyFactory) factoryObj;
+    if (factoryObj instanceof GtfsTransformStrategyFactory factory) {
       factory.createTransforms(_transformer);
       added = true;
     }
@@ -513,13 +504,12 @@ public class TransformFactory {
     EntitySchemaFactory entitySchemaFactory = _transformer.getReader().getEntitySchemaFactory();
     EntitySchema schema = entitySchemaFactory.getSchema(object.getClass());
     BeanWrapper wrapped = BeanWrapperFactory.wrap(object);
-    Map<String, Object> values = new HashMap<String, Object>();
+    Map<String, Object> values = new HashMap<>();
     for (Iterator<?> it = json.keys(); it.hasNext(); ) {
       String key = (String) it.next();
       Object v = json.get(key);
-      if (v instanceof JSONArray) {
-        JSONArray array = (JSONArray) v;
-        List<Object> asList = new ArrayList<Object>();
+      if (v instanceof JSONArray array) {
+        List<Object> asList = new ArrayList<>();
         for (int i = 0; i < array.length(); ++i) {
           asList.add(array.get(i));
         }
@@ -601,7 +591,7 @@ public class TransformFactory {
     Map<String, DeferredValueMatcher> propertyMatches =
         getPropertyValueMatchersFromJsonObject(match, _excludeForMatchSpec);
 
-    List<EntityMatch> matches = new ArrayList<EntityMatch>();
+    List<EntityMatch> matches = new ArrayList<>();
 
     for (Map.Entry<String, DeferredValueMatcher> entry : propertyMatches.entrySet()) {
       String property = entry.getKey();
@@ -646,7 +636,7 @@ public class TransformFactory {
   private Map<String, ValueSetter> getPropertyValueSettersFromJsonObject(
       Class<?> entityType, JSONObject obj, Set<String> propertiesToExclude) throws JSONException {
     Map<String, Object> map = getPropertyValuesFromJsonObject(obj, propertiesToExclude);
-    Map<String, ValueSetter> setters = new HashMap<String, ValueSetter>();
+    Map<String, ValueSetter> setters = new HashMap<>();
     for (Map.Entry<String, Object> entry : map.entrySet()) {
       String propertyName = entry.getKey();
       SingleFieldMapping mapping =
@@ -679,7 +669,7 @@ public class TransformFactory {
   private Map<String, DeferredValueMatcher> getPropertyValueMatchersFromJsonObject(
       JSONObject obj, Set<String> propertiesToExclude) throws JSONException {
     Map<String, Object> map = getPropertyValuesFromJsonObject(obj, propertiesToExclude);
-    Map<String, DeferredValueMatcher> matchers = new HashMap<String, DeferredValueMatcher>();
+    Map<String, DeferredValueMatcher> matchers = new HashMap<>();
     for (Map.Entry<String, Object> entry : map.entrySet()) {
       matchers.put(
           entry.getKey(),
@@ -690,7 +680,7 @@ public class TransformFactory {
 
   private Map<String, Object> getPropertyValuesFromJsonObject(
       JSONObject obj, Set<String> propertiesToExclude) throws JSONException {
-    Map<String, Object> map = new HashMap<String, Object>();
+    Map<String, Object> map = new HashMap<>();
     for (@SuppressWarnings("unchecked") Iterator<String> it = obj.keys(); it.hasNext(); ) {
       String property = it.next();
       if (propertiesToExclude.contains(property)) {
@@ -709,7 +699,7 @@ public class TransformFactory {
   private Map<String, Pair<String>> getEntityPropertiesAndStringReplacementsFromJsonObject(
       Class<?> entityType, JSONObject obj) throws JSONException {
 
-    Map<String, Pair<String>> map = new HashMap<String, Pair<String>>();
+    Map<String, Pair<String>> map = new HashMap<>();
 
     for (Iterator<String> it = obj.keys(); it.hasNext(); ) {
 
@@ -739,7 +729,7 @@ public class TransformFactory {
 
   private Object instantiate(Class<?> entityClass) {
     try {
-      return entityClass.newInstance();
+      return entityClass.getDeclaredConstructor().newInstance();
     } catch (Exception ex) {
       throw new IllegalStateException("error instantiating type: " + entityClass.getName());
     }

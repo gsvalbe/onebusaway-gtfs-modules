@@ -29,7 +29,6 @@ import org.onebusaway.gtfs.services.HibernateOperation;
 import org.onebusaway.gtfs.services.HibernateOperations;
 
 public class HibernateGtfsRelationalDaoImpl implements GtfsMutableRelationalDao {
-
   protected HibernateOperations _ops;
 
   public HibernateGtfsRelationalDaoImpl() {}
@@ -107,13 +106,8 @@ public class HibernateGtfsRelationalDaoImpl implements GtfsMutableRelationalDao 
   }
 
   @Override
-  public List<RouteStop> getAllRouteStops() {
-    return _ops.find("FROM RouteStop routeStop");
-  }
-
-  @Override
-  public List<RouteShape> getAllRouteShapes() {
-    return _ops.find("FROM RouteShape routeShape");
+  public Collection<RouteNetworkAssignment> getAllRouteNetworkAssignments() {
+    return _ops.find("FROM RouteNetworkAssignment");
   }
 
   @Override
@@ -338,6 +332,11 @@ public class HibernateGtfsRelationalDaoImpl implements GtfsMutableRelationalDao 
   }
 
   @Override
+  public Collection<Timeframe> getAllTimeframes() {
+    return _ops.find("FROM Timeframe");
+  }
+
+  @Override
   public Collection<Translation> getAllTranslations() {
     return _ops.find("FROM Translation");
   }
@@ -346,24 +345,6 @@ public class HibernateGtfsRelationalDaoImpl implements GtfsMutableRelationalDao 
   public Collection<Network> getAllNetworks() {
     return _ops.find("FROM Network");
   }
-
-  @Override
-  public List<String> getOptionalMetadataFilenames() {
-    return new ArrayList<>();
-  }
-
-  @Override
-  public boolean hasMetadata(String filename) {
-    return false;
-  }
-
-  @Override
-  public String getMetadata(String filename) {
-    return null;
-  }
-
-  @Override
-  public void addMetadata(String filename, String content) {}
 
   /****
    * {@link GtfsRelationalDao} Interface
@@ -443,10 +424,10 @@ public class HibernateGtfsRelationalDaoImpl implements GtfsMutableRelationalDao 
   public List<AgencyAndId> getAllServiceIds() {
     List<AgencyAndId> calendarIds = _ops.findByNamedQuery("calendarServiceIds");
     List<AgencyAndId> calendarDateIds = _ops.findByNamedQuery("calendarDateServiceIds");
-    Set<AgencyAndId> allIds = new HashSet<AgencyAndId>();
+    Set<AgencyAndId> allIds = new HashSet<>();
     allIds.addAll(calendarIds);
     allIds.addAll(calendarDateIds);
-    return new ArrayList<AgencyAndId>(allIds);
+    return new ArrayList<>(allIds);
   }
 
   @Override
@@ -464,7 +445,7 @@ public class HibernateGtfsRelationalDaoImpl implements GtfsMutableRelationalDao 
       case 0:
         return null;
       case 1:
-        return calendars.get(0);
+        return calendars.getFirst();
     }
 
     throw new MultipleCalendarsForServiceIdException(serviceId);

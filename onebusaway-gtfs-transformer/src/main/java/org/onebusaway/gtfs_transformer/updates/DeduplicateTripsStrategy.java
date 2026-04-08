@@ -42,8 +42,7 @@ public class DeduplicateTripsStrategy implements GtfsTransformStrategy {
   @Override
   public void run(TransformContext context, GtfsMutableRelationalDao dao) {
 
-    Map<String, List<Trip>> tripsByCommonId =
-        new FactoryMap<String, List<Trip>>(new ArrayList<Trip>());
+    Map<String, List<Trip>> tripsByCommonId = new FactoryMap<>(new ArrayList<Trip>());
 
     int total = 0;
     int badIds = 0;
@@ -79,7 +78,7 @@ public class DeduplicateTripsStrategy implements GtfsTransformStrategy {
 
       Collections.sort(trips, _tripComparator);
 
-      Trip tripA = trips.get(0);
+      Trip tripA = trips.getFirst();
       Trip tripB = trips.get(1);
 
       List<StopTime> stopTimesA = dao.getStopTimesForTrip(tripA);

@@ -82,10 +82,10 @@ public class HibernateGtfsRelationalDaoImplTest {
     Stop station2 = _dao.getStopForId(new AgencyAndId("X", "A"));
     List<Stop> stops = _dao.getStopsForStation(station2);
     assertEquals(2, stops.size());
-    Set<String> ids = new HashSet<String>();
+    Set<String> ids = new HashSet<>();
     ids.add("A1");
     ids.add("A2");
-    assertTrue(ids.contains(stops.get(0).getId().getId()));
+    assertTrue(ids.contains(stops.getFirst().getId().getId()));
     assertTrue(ids.contains(stops.get(1).getId().getId()));
   }
 }

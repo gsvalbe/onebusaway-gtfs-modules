@@ -144,10 +144,10 @@ public class CalendarServiceImplSyntheticTest {
 
     List<Date> dates = result.get(lsid1);
     assertEquals(1, dates.size());
-    assertEquals(d1.getAsDate(tz), dates.get(0));
+    assertEquals(d1.getAsDate(tz), dates.getFirst());
     dates = result.get(lsid3);
     assertEquals(1, dates.size());
-    assertEquals(d1.getAsDate(tz), dates.get(0));
+    assertEquals(d1.getAsDate(tz), dates.getFirst());
   }
 
   @Test
@@ -258,7 +258,7 @@ public class CalendarServiceImplSyntheticTest {
         service.getServiceDatesWithinRange(
             lsid1, intervals.getIntervalForServiceId(lsid1), from, to);
     assertEquals(1, dates.size());
-    assertEquals(d1.getAsDate(tz), dates.get(0));
+    assertEquals(d1.getAsDate(tz), dates.getFirst());
   }
 
   @Test
@@ -271,7 +271,7 @@ public class CalendarServiceImplSyntheticTest {
         service.getServiceDateArrivalsWithinRange(
             lsid1, intervals.getIntervalForServiceId(lsid1), from, to);
     assertEquals(1, dates.size());
-    assertEquals(d1.getAsDate(tz), dates.get(0));
+    assertEquals(d1.getAsDate(tz), dates.getFirst());
   }
 
   @Test
@@ -284,7 +284,7 @@ public class CalendarServiceImplSyntheticTest {
         service.getServiceDateDeparturesWithinRange(
             lsid1, intervals.getIntervalForServiceId(lsid1), from, to);
     assertEquals(1, dates.size());
-    assertEquals(d1.getAsDate(tz), dates.get(0));
+    assertEquals(d1.getAsDate(tz), dates.getFirst());
   }
 
   @Test
@@ -545,7 +545,7 @@ public class CalendarServiceImplSyntheticTest {
   private void putServiceDatesForServiceId(
       CalendarServiceData data, LocalizedServiceId lsid, List<ServiceDate> serviceDates) {
     data.putServiceDatesForServiceId(lsid.getId(), serviceDates);
-    List<Date> dates = new ArrayList<Date>();
+    List<Date> dates = new ArrayList<>();
     for (ServiceDate serviceDate : serviceDates)
       dates.add(serviceDate.getAsDate(lsid.getTimeZone()));
     data.putDatesForLocalizedServiceId(lsid, dates);

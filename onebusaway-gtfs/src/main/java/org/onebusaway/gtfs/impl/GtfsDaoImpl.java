@@ -22,7 +22,6 @@ import org.onebusaway.gtfs.services.GtfsMutableDao;
 
 public class GtfsDaoImpl extends GenericDaoImpl implements GtfsMutableDao {
 
-  public static final String[] OPTIONAL_FILE_NAMES = {"modifications.txt"};
   private final StopTimeArray stopTimes = new StopTimeArray();
 
   private final ShapePointArray shapePoints = new ShapePointArray();
@@ -30,17 +29,6 @@ public class GtfsDaoImpl extends GenericDaoImpl implements GtfsMutableDao {
   private boolean packStopTimes = false;
 
   private boolean packShapePoints = false;
-
-  private List<String> _optionalMetadataFilenames = null;
-
-  private final Map<String, String> metadataByFilename = new HashMap<>();
-
-  public GtfsDaoImpl() {
-    _optionalMetadataFilenames = new ArrayList<>();
-    if (OPTIONAL_FILE_NAMES != null) {
-      Collections.addAll(_optionalMetadataFilenames, OPTIONAL_FILE_NAMES);
-    }
-  }
 
   public boolean isPackStopTimes() {
     return packStopTimes;
@@ -103,12 +91,9 @@ public class GtfsDaoImpl extends GenericDaoImpl implements GtfsMutableDao {
     return getAllEntitiesForType(Route.class);
   }
 
-  public Collection<RouteStop> getAllRouteStops() {
-    return getAllEntitiesForType(RouteStop.class);
-  }
-
-  public Collection<RouteShape> getAllRouteShapes() {
-    return getAllEntitiesForType(RouteShape.class);
+  @Override
+  public Collection<RouteNetworkAssignment> getAllRouteNetworkAssignments() {
+    return getAllEntitiesForType(RouteNetworkAssignment.class);
   }
 
   public Collection<ShapePoint> getAllShapePoints() {
@@ -315,6 +300,11 @@ public class GtfsDaoImpl extends GenericDaoImpl implements GtfsMutableDao {
     return getAllEntitiesForType(BookingRule.class);
   }
 
+  @Override
+  public Collection<Timeframe> getAllTimeframes() {
+    return getAllEntitiesForType(Timeframe.class);
+  }
+
   public Collection<Translation> getAllTranslations() {
     return getAllEntitiesForType(Translation.class);
   }
@@ -398,27 +388,6 @@ public class GtfsDaoImpl extends GenericDaoImpl implements GtfsMutableDao {
       shapePoints.trimToSize();
     }
     super.close();
-  }
-
-  @Override
-  public List<String> getOptionalMetadataFilenames() {
-    return _optionalMetadataFilenames;
-  }
-
-  @Override
-  public boolean hasMetadata(String filename) {
-    return metadataByFilename.containsKey(filename);
-  }
-
-  @Override
-  public String getMetadata(String filename) {
-    return metadataByFilename.get(filename);
-  }
-
-  @Override
-  public void addMetadata(String filename, String content) {
-    metadataByFilename.put(filename, content);
-    if (!_optionalMetadataFilenames.contains(filename)) _optionalMetadataFilenames.add(filename);
   }
 
   /****

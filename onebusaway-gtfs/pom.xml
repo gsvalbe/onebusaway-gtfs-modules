@@ -10,7 +10,7 @@
   <parent>
     <groupId>org.onebusaway</groupId>
     <artifactId>onebusaway-gtfs-modules</artifactId>
-    <version>9.0.1</version>
+    <version>11.2.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
@@ -35,7 +35,7 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>2.19.1</version>
+      <version>2.20.1</version>
     </dependency>
     <dependency>
       <groupId>de.grundid.opendatalab</groupId>
@@ -65,6 +65,11 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.truth</groupId>
+      <artifactId>truth</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
